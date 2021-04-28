@@ -1,9 +1,7 @@
 ## RenderEngine
 
 
-
-An attempt at a simple engine for loading and rendering meshes and basic animation in the spirit of learning OpenGL 4.0. 
-
+An attempt at a simple engine for loading and rendering meshes and basic animation in the spirit of learning OpenGL 4.0.
 
 
 #### Prerequisites
@@ -14,18 +12,23 @@ The program uses SDL2 for all the OS specific stuff and GLEW for loading OpenGL 
 sudo apt install build-essentials cmake libsdl2-dev libglew-dev 
 ```
 
+Along with above binaries we are using C++17 for building.
 
 
 #### Build
 
 We are using `cmake` for building this application. To build the project execute the following command in the parent directory of source - 
-
 ```
 mkdir -p ./build
 cd build
 cmake ../
 make
 ```
+For users using vscode, the source comes with a `launch.json` file which can be used for debugging purposes.
 
- 
+#### Execute
 
+For running the **renderEngine** use the following command from the parent directory - 
+```
+pushd res; ../build/renderEngine/; popd;
+```

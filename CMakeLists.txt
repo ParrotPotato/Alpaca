@@ -11,13 +11,13 @@ include(CTest)
 enable_testing()
 
 add_executable(renderEngine 
-    main.cc 
-    core/window.cc 
-    core/input.cc
-    graphics/shader.cc
-    util/resource.cc
+    src/main.cc 
+    src/core/window.cc 
+    src/core/input.cc
+    src/graphics/shader.cc
+    src/util/resource.cc
 )
-target_include_directories(renderEngine PUBLIC "${PROJECT_SOURCE_DIR}")
+target_include_directories(renderEngine PUBLIC "${PROJECT_SOURCE_DIR}/src/")
 
 target_include_directories(renderEngine PUBLIC ${SDL2_INCLUDE_DIRS})
 target_include_directories(renderEngine PUBLIC ${OPENGL_INCLUDE_DIRS})

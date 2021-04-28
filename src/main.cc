@@ -18,7 +18,7 @@ int main()
     SDL_Init(SDL_INIT_EVERYTHING);
 
     Window window("Main Window", 800, 600);
-    window.set_clear_color(glm::vec3(0.3, 0.5, 0.8));
+    window.set_clear_color(glm::vec3(0.050, 0.160, 0.4704));
 
     InputHandler input(window);
     input.escapequit = true;
