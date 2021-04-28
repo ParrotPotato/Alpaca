@@ -12,6 +12,8 @@ struct InputHandler
 
     Window & target_window;
 
+    bool escapequit = false;
+
     InputHandler(Window & _window);
 
     void update();
@@ -21,6 +23,7 @@ struct InputHandler
 
     bool keydown(int keyid);
     bool keyup(int keyid);
+
 };
 
 

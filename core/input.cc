@@ -54,6 +54,12 @@ void InputHandler::update()
         }
 
     }
+
+    if(keypressed(SDLK_ESCAPE) == true)
+    {
+        target_window.callback_close();
+        target_window.closed = true;
+    }
 }
 
 bool InputHandler::keydown(int keyid)

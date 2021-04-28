@@ -3,9 +3,9 @@
 #include <GL/glew.h>
 #include <iostream>
 
-Window::Window(std::string _windowname, int _width, int _height, glm::vec3 _clear_color): width(_width), height(_height),clear_color(_clear_color)
+Window::Window(std::string windowname, int _width, int _height, glm::vec3 _clear_color, float _clear_depth): width(_width), height(_height), clear_color(_clear_color), clear_depth(_clear_depth)
 {
-    sdl_win = SDL_CreateWindow(_windowname.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_OPENGL);
+    sdl_win = SDL_CreateWindow(windowname.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_OPENGL);
     if(sdl_win == nullptr)
     {
         std::cerr << "SDL Error (failed creating window): " << SDL_GetError() << std::endl;
@@ -43,7 +43,19 @@ void Window::update()
     SDL_GL_SwapWindow(sdl_win);
 }
 
-bool Window::is_open()
+bool Window::isopen()
 {
     return !closed;
+}
+
+void Window::set_clear_color(glm::vec3 _clear_color)
+{
+    glClearColor(_clear_color.r, _clear_color.g, _clear_color.b, 1.0);
+    clear_color = _clear_color;
+}
+
+void Window::set_clear_depth(float _clear_depth)
+{
+    glClearDepth(_clear_depth);
+    clear_depth = _clear_depth;
 }
