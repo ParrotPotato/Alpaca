@@ -8,7 +8,7 @@ std::pair<int, char *> load_file_content(std::string filename)
     char * buffer = nullptr;
     long length = 0;
     size_t size = 0;
-    FILE * f = fopen(filename.c_str(), "rb");
+    FILE * f = fopen(filename.c_str(), "r");
 
     std::pair<int, char *> retval;
 
@@ -16,6 +16,7 @@ std::pair<int, char *> load_file_content(std::string filename)
     {
         fseek(f, 0, SEEK_END);
         length = ftell(f);
+        fseek(f, 0, SEEK_SET);
         buffer = (char *)malloc(length);
 
         retval.first = 0;

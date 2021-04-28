@@ -1,12 +1,17 @@
 #include <core/window.hh>
 #include <core/input.hh>
 
+#include <graphics/shader.hh>
+
 #include <SDL2/SDL.h>
 
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 
 #include <iostream>
+#include <filesystem>
+
+
 
 int main()
 {
@@ -19,10 +24,19 @@ int main()
     input.escapequit = true;
 
     std::cout << "Opengl : " << glGetString(GL_VERSION) << "\n";
+    std::cout << "Running: " << std::filesystem::current_path() << "\n";
+
+    ShaderProgram program("shader/simple/shader.vs", "shader/simple/shader.fs");
 
     while(window.isopen())
     {
+        window.clear();
+        glUseProgram(program.programid);
+        
         input.update();
+        
+        glUseProgram(0);
+        window.update();
     }
 
     return 0;

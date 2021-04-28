@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.15.0)
 project(renderEngine VERSION 0.1.0)
 
+set(CMAKE_CXX_STANDARD 17)
+
 find_package(SDL2 REQUIRED)
 find_package(OpenGL REQUIRED)
 find_package(GLEW REQUIRED)
@@ -15,8 +17,7 @@ add_executable(renderEngine
     graphics/shader.cc
     util/resource.cc
 )
-
-target_include_directories(renderEngine PUBLIC "./")
+target_include_directories(renderEngine PUBLIC "${PROJECT_SOURCE_DIR}")
 
 target_include_directories(renderEngine PUBLIC ${SDL2_INCLUDE_DIRS})
 target_include_directories(renderEngine PUBLIC ${OPENGL_INCLUDE_DIRS})
