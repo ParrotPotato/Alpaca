@@ -34,7 +34,12 @@ add_executable(renderEngine
     src/main.cc 
     src/core/window.cc 
     src/core/input.cc
+
     src/graphics/shader.cc
+    src/graphics/vertexattrib.cc
+    src/graphics/renderer.cc
+    src/graphics/mesh.cc
+
     src/util/resource.cc
 )
 target_include_directories(renderEngine PUBLIC "${PROJECT_SOURCE_DIR}/src/")

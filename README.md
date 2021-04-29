@@ -14,8 +14,15 @@ sudo apt install build-essentials cmake libsdl2-dev libglew-dev
 
 Along with above binaries we are using C++17 for building.
 
-
 #### Build
+
+To build first we need to clone the git repository along with all its sub-modules.
+
+```
+git clone --recurse-submodules [module link]
+```
+
+
 
 We are using `cmake` for building this application. To build the project execute the following command in the parent directory of source - 
 ```
