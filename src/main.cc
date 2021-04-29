@@ -11,6 +11,7 @@
 #include <iostream>
 #include <filesystem>
 
+#include <imgui.h>
 
 
 int main()
@@ -32,9 +33,9 @@ int main()
     {
         window.clear();
         glUseProgram(program.programid);
-        
+
         input.update();
-        
+
         glUseProgram(0);
         window.update();
     }

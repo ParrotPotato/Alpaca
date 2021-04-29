@@ -22,8 +22,10 @@ struct Window
     int height = 0;
 
     bool closed = false;
+    bool imgui_enabled = true;
 
-    Window(std::string windowname, int width, int height, glm::vec3 _clear_color = glm::vec3(0.0f, 0.0f, 0.0f), float _clear_depth = 1.0f);
+    Window(std::string windowname, int width, int height, glm::vec3 _clear_color = glm::vec3(0.0f, 0.0f, 0.0f), float _clear_depth = 1.0f, bool _imgui_enabled = true);
+    ~Window();
 
     void set_clear_color(glm::vec3 color);
     void set_clear_depth(float depth);

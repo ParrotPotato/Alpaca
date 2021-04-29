@@ -1,6 +1,9 @@
 #include <core/input.hh>
 #include <core/window.hh>
 
+#include <imgui.h>
+#include <imgui_impl_sdl.h>
+
 #include <iostream>
 
 
@@ -21,10 +24,16 @@ void InputHandler::update()
 
     SDL_Event event;
 
-    while(SDL_PollEvent(&event))
+    while (SDL_PollEvent(&event))
     {
-        switch(event.type)
+        if (target_window.imgui_enabled == true)
         {
+            ImGui_ImplSDL2_ProcessEvent(&event);
+        }
+
+        switch (event.type)
+        {
+
             case SDL_QUIT:
             {
                 target_window.callback_close();
@@ -52,7 +61,6 @@ void InputHandler::update()
             default:
             break;
         }
-
     }
 
     if(keypressed(SDLK_ESCAPE) == true)
