@@ -9,7 +9,7 @@
 
 
 
-Window::Window(std::string windowname, int _width, int _height, glm::vec3 _clear_color, float _clear_depth, bool _imgui_enabled): width(_width), height(_height), clear_color(_clear_color), clear_depth(_clear_depth), imgui_enabled(_imgui_enabled)
+Window::Window(std::string windowname, int _width, int _height, glm::vec4 _clear_color, float _clear_depth, bool _imgui_enabled): width(_width), height(_height), clear_color(_clear_color), clear_depth(_clear_depth), imgui_enabled(_imgui_enabled)
 {
     sdl_win = SDL_CreateWindow(windowname.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_OPENGL);
     if(sdl_win == nullptr)
@@ -49,7 +49,7 @@ Window::Window(std::string windowname, int _width, int _height, glm::vec3 _clear
         ImGui_ImplOpenGL3_Init();
     }
 
-    glClearColor(clear_color.r, clear_color.g, clear_color.b, 1.0f);
+    glClearColor(clear_color.r, clear_color.g, clear_color.b, clear_color.a);
     glClearDepth(1.0f); // Used for stensil buffer and depth rendering
 }
 
@@ -79,9 +79,9 @@ bool Window::isopen()
     return !closed;
 }
 
-void Window::set_clear_color(glm::vec3 _clear_color)
+void Window::set_clear_color(glm::vec4 _clear_color)
 {
-    glClearColor(_clear_color.r, _clear_color.g, _clear_color.b, 1.0);
+    glClearColor(_clear_color.r, _clear_color.g, _clear_color.b, _clear_color.a);
     clear_color = _clear_color;
 }
 

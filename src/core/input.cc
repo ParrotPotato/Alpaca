@@ -26,10 +26,6 @@ void InputHandler::update()
 
     while (SDL_PollEvent(&event))
     {
-        if (target_window.imgui_enabled == true)
-        {
-            ImGui_ImplSDL2_ProcessEvent(&event);
-        }
 
         switch (event.type)
         {
@@ -60,6 +56,11 @@ void InputHandler::update()
 
             default:
             break;
+        }
+
+        if (target_window.imgui_enabled == true)
+        {
+            ImGui_ImplSDL2_ProcessEvent(&event);
         }
     }
 

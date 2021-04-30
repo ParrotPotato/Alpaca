@@ -13,6 +13,8 @@ struct Mesh
     std::vector<glm::vec3> position;
     std::vector<glm::vec3> normal;
     std::vector<int> indices;
+
+    glm::mat4 model_mat = glm::mat4(1.0f);
 };
 
 #endif

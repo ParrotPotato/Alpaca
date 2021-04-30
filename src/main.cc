@@ -11,6 +11,8 @@
 
 #include <GL/glew.h>
 #include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 #include <iostream>
 #include <filesystem>
@@ -23,7 +25,6 @@ int main()
     SDL_Init(SDL_INIT_EVERYTHING);
 
     Window window("Main Window", 800, 600);
-    window.set_clear_color(glm::vec3(0.050, 0.160, 0.4704));
 
     InputHandler input(window);
     input.escapequit = true;
@@ -31,10 +32,10 @@ int main()
     std::cout << "Opengl : " << glGetString(GL_VERSION) << "\n";
     std::cout << "Running: " << std::filesystem::current_path() << "\n";
 
-    ShaderProgram program("shader/simple/shader.vs", "shader/simple/shader.fs");
+    ShaderInfo shaderinfo = {true, true, true};
+    ShaderProgram program("shader/simple/shader.vs", "shader/simple/shader.fs", shaderinfo);
 
     // used for creating a wigit for updating clear color
-    float color[4] = {1.0f, 1.0f, 1.0f, 1.0f};
 
     Mesh mesh;
 
@@ -52,6 +53,9 @@ int main()
     SimpleRenderer simplerenderer(program);
     simplerenderer.add_mesh_to_render(mesh);
 
+
+    glm::vec4 clear_color(0.2f, 0.3f, 0.4f, 1.0f);
+    glm::vec3 view_pos(0.0f, 0.0f, 0.0f);
     while(window.isopen())
     {
         window.clear();
@@ -59,9 +63,10 @@ int main()
         input.update();
 
         { // bit of test code
-            ImGui::ColorEdit3("Clear Color", color);
-            glm::vec3 clear_color = glm::vec3(color[0], color[1], color[2]);
+            ImGui::ColorEdit3("Clear Color", glm::value_ptr(clear_color));
+            ImGui::SliderFloat3("Position", glm::value_ptr(view_pos), -10.0f, 10.0f);
             window.set_clear_color(clear_color);
+            simplerenderer.view_matrix = glm::translate(glm::mat4(1.0f), view_pos);
         }
 
         simplerenderer.draw();

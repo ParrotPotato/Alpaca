@@ -53,17 +53,24 @@ void Shader::delete_shader()
 }
 
 
-ShaderProgram::ShaderProgram(std::string vertexshadersource, std::string fragmentshadersource)
+ShaderProgram::ShaderProgram(std::string vertexshadersource, std::string fragmentshadersource, ShaderInfo _shaderinfo):shaderinfo(_shaderinfo)
 {
     std::vector<std::pair<std::string, int>> shader_sources;
     shader_sources.push_back(std::make_pair(vertexshadersource, GL_VERTEX_SHADER));
     shader_sources.push_back(std::make_pair(fragmentshadersource, GL_FRAGMENT_SHADER));
+
     load_program_from_source_list(shader_sources);
+
+    // Setting up all the uniforms and other values
+    load_all_uniform_variables(_shaderinfo);
 }
 
-ShaderProgram::ShaderProgram(std::vector<std::pair<std::string, int>> shader_source)
+ShaderProgram::ShaderProgram(std::vector<std::pair<std::string, int>> shader_source, ShaderInfo _shaderinfo):shaderinfo(_shaderinfo)
 {
     load_program_from_source_list(shader_source);
+
+    // Setting up all the uniforms and other values
+    load_all_uniform_variables(_shaderinfo);
 }
 
 void ShaderProgram::load_program_from_source_list(std::vector<std::pair<std::string, int>> shader_source)
@@ -108,6 +115,37 @@ void ShaderProgram::load_program_from_source_list(std::vector<std::pair<std::str
     return;
 }
 
+void ShaderProgram::load_all_uniform_variables(ShaderInfo _shaderinfo)
+{
+    if(programid == 0) return;
+
+    shaderinfo = _shaderinfo;
+
+    if(shaderinfo.model_mat)
+    {
+        model_mat_location = glGetUniformLocation(programid, "model");
+        if(model_mat_location == -1)
+        {
+            printf("Unable to laod model uniform location");
+        }
+    }
+    if(shaderinfo.view_mat)
+    {
+        view_mat_location = glGetUniformLocation(programid, "view");
+        if(view_mat_location == -1)
+        {
+            printf("Unable to laod view uniform location");
+        }
+    }
+    if(shaderinfo.projection_mat)
+    {
+        projection_mat_location = glGetUniformLocation(programid, "projection");
+        if(projection_mat_location == -1)
+        {
+            printf("Unable to laod projection uniform location");
+        }
+    }
+}
 
 void ShaderProgram::delete_shader_program()
 {
