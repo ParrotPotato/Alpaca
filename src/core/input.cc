@@ -26,7 +26,7 @@ void InputHandler::update()
 
     while (SDL_PollEvent(&event))
     {
-
+        ImGui_ImplSDL2_ProcessEvent(&event);
         switch (event.type)
         {
 
@@ -58,10 +58,6 @@ void InputHandler::update()
             break;
         }
 
-        if (target_window.imgui_enabled == true)
-        {
-            ImGui_ImplSDL2_ProcessEvent(&event);
-        }
     }
 
     if(keypressed(SDLK_ESCAPE) == true)

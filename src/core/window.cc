@@ -35,20 +35,6 @@ Window::Window(std::string windowname, int _width, int _height, glm::vec4 _clear
     callback_close = [] () -> void {};
     callback_resize = [=](int _width, int _height) mutable -> void {this->width= _width; this->height= _height;};
 
-    // Initialising Imgui
-
-    if(imgui_enabled == true)
-    {
-        IMGUI_CHECKVERSION();
-        ImGui::CreateContext();
-        ImGuiIO &io = ImGui::GetIO();
-        (void)io;
-        ImGui::StyleColorsDark();
-
-        ImGui_ImplSDL2_InitForOpenGL(sdl_win, context);
-        ImGui_ImplOpenGL3_Init();
-    }
-
     glClearColor(clear_color.r, clear_color.g, clear_color.b, clear_color.a);
     glClearDepth(1.0f); // Used for stensil buffer and depth rendering
 }
@@ -56,22 +42,11 @@ Window::Window(std::string windowname, int _width, int _height, glm::vec4 _clear
 void Window::clear()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    if (imgui_enabled == true)
-    {
-        ImGui_ImplOpenGL3_NewFrame();
-        ImGui_ImplSDL2_NewFrame(sdl_win);
-        ImGui::NewFrame();
-    }
 }
 
 void Window::update()
 {
-    ImGui::Render();
-    if (imgui_enabled == true)
-    {
-        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-        SDL_GL_SwapWindow(sdl_win);
-    }
+    SDL_GL_SwapWindow(sdl_win);
 }
 
 bool Window::isopen()
@@ -93,13 +68,6 @@ void Window::set_clear_depth(float _clear_depth)
 
 Window::~Window()
 {
-    if(imgui_enabled == true)
-    {
-        ImGui_ImplOpenGL3_Shutdown();
-        ImGui_ImplSDL2_Shutdown();
-        ImGui::DestroyContext();
-    }
-
     SDL_GL_DeleteContext(context);
     SDL_DestroyWindow(sdl_win);
 }
