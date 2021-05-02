@@ -6,6 +6,7 @@
 #include <graphics/vertexattrib.hh>
 #include <graphics/mesh.hh>
 #include <graphics/renderer.hh>
+#include <graphics/camera.hh>
 
 #include <SDL2/SDL.h>
 
@@ -21,6 +22,26 @@
 #include <imgui_impl_sdl.h>
 #include <imgui_impl_opengl3.h>
 
+
+void processInput(InputHandler &input, DefaultCamera &camera, SimpleRenderer &renderer)
+{
+    if(input.keyboard.keydown(SDLK_a))
+    {
+        camera.position += glm::vec3(-0.1f, 0.0f, 0.0f);
+    }
+    if(input.keyboard.keydown(SDLK_d))
+    {
+        camera.position += glm::vec3(0.1f, 0.0f, 0.0f);
+    }
+    if(input.keyboard.keydown(SDLK_w))
+    {
+        camera.position += glm::vec3(0.0f, 0.0f, 0.1f);
+    }
+    if(input.keyboard.keydown(SDLK_s))
+    {
+        camera.position += glm::vec3(0.0f, 0.0f, -0.1f);
+    }
+}
 
 int main()
 {
@@ -70,9 +91,10 @@ int main()
     SimpleRenderer simplerenderer(program);
     simplerenderer.add_mesh_to_render(mesh);
 
+    
+    DefaultCamera camera;
 
     glm::vec4 clear_color(0.2f, 0.3f, 0.4f, 1.0f);
-    glm::vec3 view_pos(0.0f, 0.0f, 0.0f);
 
     while(window.isopen())
     {
@@ -87,17 +109,16 @@ int main()
         ImGui_ImplSDL2_NewFrame(window.sdl_win);
         ImGui::NewFrame();
 
-
         {
             ImGui::Begin("Debug");
-
             ImGui::ColorEdit3("clear color", glm::value_ptr(clear_color));
-            ImGui::SliderFloat3("position", glm::value_ptr(view_pos), -1.0f, 1.0f);
             window.set_clear_color(clear_color);
-            simplerenderer.view_matrix = glm::translate(glm::mat4(1.0f), view_pos);
-
             ImGui::End();
         }
+
+        processInput(input, camera, simplerenderer);
+
+        simplerenderer.view_matrix = camera.get_view_matrix();
 
         simplerenderer.draw();
 

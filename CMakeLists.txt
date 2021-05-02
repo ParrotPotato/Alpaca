@@ -39,10 +39,12 @@ add_executable(renderEngine
     src/graphics/vertexattrib.cc
     src/graphics/renderer.cc
     src/graphics/mesh.cc
+    src/graphics/camera.cc
 
     src/util/resource.cc
 )
 target_include_directories(renderEngine PUBLIC "${PROJECT_SOURCE_DIR}/src/")
+target_include_directories(renderEngine PUBLIC "${PROJECT_SOURCE_DIR}/vendor/stb")
 target_include_directories(renderEngine PUBLIC "${PROJECT_SOURCE_DIR}/vendor/imgui")
 
 target_include_directories(renderEngine PUBLIC ${SDL2_INCLUDE_DIRS})
