@@ -1,4 +1,4 @@
-## RenderEngine
+## Alpaca
 
 
 An attempt at a simple engine for loading and rendering meshes and basic animation in the spirit of learning OpenGL 4.0.
@@ -35,7 +35,7 @@ For users using vscode, the source comes with a `launch.json` file which can be 
 
 #### Execute
 
-For running the **renderEngine** use the following command from the parent directory - 
+For running the **"code"** use the following command from the parent directory - 
 ```
 pushd res; ../build/renderEngine/; popd;
 ```
