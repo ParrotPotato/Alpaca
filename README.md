@@ -37,5 +37,5 @@ For users using vscode, the source comes with a `launch.json` file which can be 
 
 For running the **"code"** use the following command from the parent directory - 
 ```
-pushd res; ../build/renderEngine/; popd;
+pushd res; ../build/renderEngine; popd;
 ```
