@@ -19,7 +19,7 @@ Along with above binaries we are using C++17 for building.
 To build first we need to clone the git repository along with all its sub-modules.
 
 ```
-git clone --recurse-submodules [module link]
+git clone --recurse-submodules https://github.com/ParrotPotato/Alpaca.git
 ```
 
 
@@ -37,5 +37,5 @@ For users using vscode, the source comes with a `launch.json` file which can be 
 
 For running the **"code"** use the following command from the parent directory - 
 ```
-pushd res; ../build/renderEngine/; popd;
+pushd res; ../build/renderEngine; popd;
 ```
