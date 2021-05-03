@@ -12,6 +12,10 @@ void MouseHandler::swap_buttonbuffer()
     {
         mouseper[x.first] = x.second;
     }
+
+    mouse_pressed = false;
+    mouse_motion = false;
+    mouse_released = false;
 }
 
 bool MouseHandler::buttonclicked(int buttonid)
@@ -44,16 +48,20 @@ void MouseHandler::update(SDL_Event & ref_event)
             rely = ref_event.motion.yrel;
             posx = ref_event.motion.x;
             posy = ref_event.motion.y;
+
+            mouse_motion = true;
         }
         break;
         case SDL_MOUSEBUTTONUP:
         {
             mousecur[ref_event.button.button] = false;
+            mouse_released = true;
         };
         break;
         case SDL_MOUSEBUTTONDOWN:
         {
             mousecur[ref_event.button.button] = true;
+            mouse_pressed = true;
         };
         break;
     }

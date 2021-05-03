@@ -15,6 +15,7 @@ struct MouseHandler
 
     bool mouse_motion;
     bool mouse_pressed;
+    bool mouse_released;
 
     // TODO(nitesh): Do we really need double click check ? 
 
