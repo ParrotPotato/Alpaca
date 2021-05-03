@@ -5,6 +5,8 @@
 
 #include <graphics/shader.hh>
 
+#include <core/input.hh>
+
 
 struct DefaultCamera
 {
@@ -13,6 +15,8 @@ struct DefaultCamera
     glm::vec3 d = glm::vec3(0.0f, 0.0f, -1.0f);
 
     glm::mat4 get_view_matrix();
+
+    void update_camera_position(InputHandler & inputhandler);
 };
 
 

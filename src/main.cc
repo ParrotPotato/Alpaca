@@ -24,61 +24,11 @@
 #include <imgui_impl_opengl3.h>
 
 
-void processInput(InputHandler &input, DefaultCamera &camera, SimpleRenderer &renderer)
+void processInput(InputHandler &input)
 {
-    static float imm_mouse_sensitivity = 0.1f;
-    static float imm_camera_movement = 0.1f;
-    static float yaw = -90.f;
-    static float pitch = 0;
-
-    {
-        ImGui::Begin("Camera Motion");
-        ImGui::SliderFloat("mouse sensitivity", &imm_mouse_sensitivity, 0.1f, 0.9f);
-        ImGui::SliderFloat("key sensitivity", &imm_camera_movement, 0.1f, 2.f);
-        ImGui::End();
-    }
-
-    if (input.keyboard.keydown(SDLK_w))
-    {
-        camera.position += camera.d * imm_camera_movement;
-    }
-    if(input.keyboard.keydown(SDLK_s))
-    {
-        camera.position += camera.d * (-imm_camera_movement);
-    }
-    if(input.keyboard.keydown(SDLK_a))
-    {
-        camera.position += glm::normalize(glm::cross(camera.d, camera.up)) * imm_camera_movement;
-    }
-    if(input.keyboard.keydown(SDLK_d))
-    {
-        camera.position += glm::normalize(glm::cross(camera.d, camera.up)) * (-imm_camera_movement);
-    }
-
     if(input.keyboard.keydown(SDLK_LSHIFT))
     {
         SDL_SetRelativeMouseMode(SDL_TRUE);
-        if(input.mouse.mouse_motion)
-        {
-            float sensitivity = imm_mouse_sensitivity;
-
-            float xoffset = input.mouse.relx * sensitivity;
-            float yoffset = input.mouse.rely * sensitivity;
-
-            yaw += xoffset;
-            pitch += yoffset;
-
-            if(pitch > 89.0f) pitch = 89.0f;
-            else if(pitch < -89.0) pitch = -89.0f;
-
-            glm::vec3 front;
-
-            front.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
-            front.y = -sin(glm::radians(pitch));
-            front.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
-
-            camera.d = front;
-        }
     }
     else
     {
@@ -144,7 +94,6 @@ int main()
     while(window.isopen())
     {
         window.clear();
-
         input.update();
 
         // NOTE(nitesh): newframe for imgui should be created after the input have been passed to it and before the data has
@@ -162,8 +111,8 @@ int main()
             ImGui::End();
         }
 
-        processInput(input, camera, simplerenderer);
-
+        processInput(input);
+        camera.update_camera_position(input);
         simplerenderer.view_matrix = camera.get_view_matrix();
 
         simplerenderer.draw();
