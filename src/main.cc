@@ -26,21 +26,63 @@
 
 void processInput(InputHandler &input, DefaultCamera &camera, SimpleRenderer &renderer)
 {
-    if(input.keyboard.keydown(SDLK_a))
+    static float imm_mouse_sensitivity = 0.1f;
+    static float imm_camera_movement = 0.1f;
+    static float yaw = -90.f;
+    static float pitch = 0;
+
     {
-        camera.position += glm::vec3(-1.0f, 0.0f, 0.0f);
+        ImGui::Begin("Camera Motion");
+        ImGui::SliderFloat("mouse sensitivity", &imm_mouse_sensitivity, 0.1f, 0.9f);
+        ImGui::SliderFloat("key sensitivity", &imm_camera_movement, 0.1f, 2.f);
+        ImGui::End();
     }
-    if(input.keyboard.keydown(SDLK_d))
+
+    if (input.keyboard.keydown(SDLK_w))
     {
-        camera.position += glm::vec3(1.0f, 0.0f, 0.0f);
-    }
-    if(input.keyboard.keydown(SDLK_w))
-    {
-        camera.position += glm::vec3(0.0f, 0.0f, -1.0f);
+        camera.position += camera.d * imm_camera_movement;
     }
     if(input.keyboard.keydown(SDLK_s))
     {
-        camera.position += glm::vec3(0.0f, 0.0f, 1.0f);
+        camera.position += camera.d * (-imm_camera_movement);
+    }
+    if(input.keyboard.keydown(SDLK_a))
+    {
+        camera.position += glm::normalize(glm::cross(camera.d, camera.up)) * imm_camera_movement;
+    }
+    if(input.keyboard.keydown(SDLK_d))
+    {
+        camera.position += glm::normalize(glm::cross(camera.d, camera.up)) * (-imm_camera_movement);
+    }
+
+    if(input.keyboard.keydown(SDLK_LSHIFT))
+    {
+        SDL_SetRelativeMouseMode(SDL_TRUE);
+        if(input.mouse.mouse_motion)
+        {
+            float sensitivity = imm_mouse_sensitivity;
+
+            float xoffset = input.mouse.relx * sensitivity;
+            float yoffset = input.mouse.rely * sensitivity;
+
+            yaw += xoffset;
+            pitch += yoffset;
+
+            if(pitch > 89.0f) pitch = 89.0f;
+            else if(pitch < -89.0) pitch = -89.0f;
+
+            glm::vec3 front;
+
+            front.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
+            front.y = -sin(glm::radians(pitch));
+            front.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
+
+            camera.d = front;
+        }
+    }
+    else
+    {
+        SDL_SetRelativeMouseMode(SDL_FALSE);
     }
 }
 
