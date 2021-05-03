@@ -14,6 +14,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <glm/gtx/string_cast.hpp>
 
 #include <iostream>
 #include <filesystem>
@@ -27,19 +28,19 @@ void processInput(InputHandler &input, DefaultCamera &camera, SimpleRenderer &re
 {
     if(input.keyboard.keydown(SDLK_a))
     {
-        camera.position += glm::vec3(-0.1f, 0.0f, 0.0f);
+        camera.position += glm::vec3(-1.0f, 0.0f, 0.0f);
     }
     if(input.keyboard.keydown(SDLK_d))
     {
-        camera.position += glm::vec3(0.1f, 0.0f, 0.0f);
+        camera.position += glm::vec3(1.0f, 0.0f, 0.0f);
     }
     if(input.keyboard.keydown(SDLK_w))
     {
-        camera.position += glm::vec3(0.0f, 0.0f, 0.1f);
+        camera.position += glm::vec3(0.0f, 0.0f, -1.0f);
     }
     if(input.keyboard.keydown(SDLK_s))
     {
-        camera.position += glm::vec3(0.0f, 0.0f, -0.1f);
+        camera.position += glm::vec3(0.0f, 0.0f, 1.0f);
     }
 }
 
@@ -76,9 +77,9 @@ int main()
 
     Mesh mesh;
 
-    mesh.position.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
-    mesh.position.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
-    mesh.position.push_back(glm::vec3(0.0f, 1.0f, 0.0f));
+    mesh.position.push_back(glm::vec3(0.0f, 0.0f, -10.0f));
+    mesh.position.push_back(glm::vec3(1.0f, 0.0f, -10.0f));
+    mesh.position.push_back(glm::vec3(0.0f, 1.0f, -10.0f));
 
     mesh.normal.push_back(glm::vec3(0.0f, 0.0f, 1.0f));
     mesh.normal.push_back(glm::vec3(0.0f, 0.0f, 1.0f));
@@ -88,7 +89,9 @@ int main()
     mesh.indices.push_back(1);
     mesh.indices.push_back(2);
 
-    SimpleRenderer simplerenderer(program);
+    mesh.model_mat = glm::scale(mesh.model_mat, glm::vec3(5.0f, 5.0f, 1.0f));
+
+    SimpleRenderer simplerenderer(program, true);
     simplerenderer.add_mesh_to_render(mesh);
 
     
@@ -112,6 +115,7 @@ int main()
         {
             ImGui::Begin("Debug");
             ImGui::ColorEdit3("clear color", glm::value_ptr(clear_color));
+            ImGui::SliderFloat3("camera position", glm::value_ptr(camera.position), 0, 100);
             window.set_clear_color(clear_color);
             ImGui::End();
         }

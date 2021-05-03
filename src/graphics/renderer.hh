@@ -22,8 +22,10 @@ struct SimpleRenderer
     glm::mat4 view_matrix;
     glm::mat4 projection_matrix;
 
+    bool enable_3d;
+
     SimpleRenderer() = default;
-    SimpleRenderer(ShaderProgram _program, glm::mat4 _view_mat = glm::mat4(1.0f), glm::mat4 _projection_mat = glm::mat4(1.0f));
+    SimpleRenderer(ShaderProgram _program, bool enable_3d = false, glm::mat4 _view_mat = glm::mat4(1.0f), glm::mat4 _projection_mat = glm::mat4(1.0f));
 
     void add_mesh_to_render(Mesh mesh);
     void draw();

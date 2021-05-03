@@ -4,9 +4,20 @@
 
 #include <utility>
 
-SimpleRenderer::SimpleRenderer(ShaderProgram _program, glm::mat4 _view_mat, glm::mat4 _projection_mat):program(_program),view_matrix(_view_mat),projection_matrix(_projection_mat)
+SimpleRenderer::SimpleRenderer(ShaderProgram _program, bool enable_3d, glm::mat4 _view_mat, glm::mat4 _projection_mat):program(_program),view_matrix(_view_mat),projection_matrix(_projection_mat)
 {
-    // do something with this
+    if(enable_3d == false)
+    {
+        // setting up ortho graphic projection if the rendering is set to be 2d (which is not entirely accurate but
+        // works for now)
+        projection_matrix = glm::ortho(0.0f, 800.0f, 0.0f, 600.0f, 0.1f, 100.0f);
+    }
+    else
+    {
+        // setting up perspective projection if the rendering is set to be 3d (meh, kind of a hack (with all the aspect ratio)
+        // but works for the time being)
+        projection_matrix = glm::perspective(glm::radians(45.0f), (float)800 / (float)600, 0.1f, 100.0f);
+    }
 }
 
 void SimpleRenderer::add_mesh_to_render(Mesh mesh)
