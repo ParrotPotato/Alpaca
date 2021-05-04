@@ -39,3 +39,11 @@ For running the **"code"** use the following command from the parent directory -
 ```
 pushd res; ../build/renderEngine; popd;
 ```
+
+#### TODO
+
+Further tasks that I want to do -
+
+- [ ] Loading textures
+- [ ] Loading Meshes from obj files
+- [ ] Adding basic Phong lighting in the shaders
