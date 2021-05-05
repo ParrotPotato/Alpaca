@@ -1,9 +1,14 @@
 #version 330 core
 
 in vec3 outputnormal;
+in vec2 fragmenttexcoord;
+
+uniform sampler2D meshtexture;
+
 out vec4 color;
 
 void main()
 {
-    color = vec4(0.2, 0.3, 0.8, 1.0);
+    color = texture(meshtexture, fragmenttexcoord);
+    color.a = 1.0f;
 }

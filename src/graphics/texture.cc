@@ -3,6 +3,8 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
 
+#include <iostream>
+
 
 std::unordered_map<std::string, std::pair<int, Texture>> TextureResourceHandler::resource_map;
 SDL_mutex * TextureResourceHandler::mutex;
@@ -26,6 +28,17 @@ Texture TextureResourceHandler::load_texture(std::string sourcepath)
     int width, height, nrchannel;
     unsigned char * texture_data = stbi_load(sourcepath.c_str(), &width, &height, &nrchannel, 0);
 
+    std::cout << "Debug =] Texture source : " << sourcepath;
+    if(nrchannel == STBI_rgb_alpha)
+    {
+        std::cout << " STBI_rgb_aplha" << "\n";
+    }
+    else if(nrchannel == STBI_rgb)
+    {
+        std::cout << " STBI_rgb" << "\n";
+    }
+
+
     if(!texture_data)
     {
         return Texture();
@@ -34,6 +47,9 @@ Texture TextureResourceHandler::load_texture(std::string sourcepath)
     GLuint texture_id;
     glGenTextures(1, &texture_id);
     glBindTexture(GL_TEXTURE_2D, texture_id);
+
+    // TODO(nitesh) : Figure out how to know the exact bytes alignment of the textures
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
     // setting up the texture information wrt buffer like wrapping etc
 

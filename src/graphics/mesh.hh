@@ -1,6 +1,8 @@
 #ifndef MESH_HH
 #define MESH_HH
 
+#include <graphics/texture.hh>
+
 #include <glm/glm.hpp>
 
 #include <vector>
@@ -21,6 +23,8 @@ struct Mesh
 {
     std::vector<Vertex> vertices;
     std::vector<int> indices;
+
+    Texture texture;
 
     glm::mat4 model_mat = glm::mat4(1.0f);
 };

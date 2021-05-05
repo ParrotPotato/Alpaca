@@ -15,7 +15,7 @@ struct SimpleRenderer
 
     // we would later need a unorderd map here for storing 
     // model transformation along with the vertex array
-    std::vector<std::pair<VertexArray, glm::mat4>> vertexarrays;
+    std::vector<std::pair<VertexArray, Mesh>> vertexarrays;
     ShaderProgram program;
 
     // view matrix is also the camera matrix for most of the operations

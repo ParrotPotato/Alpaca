@@ -24,23 +24,31 @@ void SimpleRenderer::add_mesh_to_render(Mesh mesh)
 {
     RenderBuffer render_buffer(mesh);
     VertexArray vertex_array(render_buffer);
-    vertexarrays.push_back(std::make_pair(vertex_array, mesh.model_mat));
+    vertexarrays.push_back(std::make_pair(vertex_array, mesh));
+    // This leads to creating a copy of the entire mesh along with the texture reference
+    // TODO(nitesh): Fix this using std::move
+
+
+    // TODO(nitesh): Add functionality for unload a mesh and clearing all the references
 }
 
 void SimpleRenderer::draw()
 {
     glUseProgram(program.programid);
-    for(std::pair<VertexArray, glm::mat4> entry: vertexarrays)
+    for(std::pair<VertexArray, Mesh> entry: vertexarrays)
     {
-        auto vertexarr = entry.first;
-        auto model_mat = entry.second;
+        VertexArray vertexarr = entry.first;
+        Mesh mesh = entry.second;
 
         if(program.shaderinfo.model_mat)
-            glUniformMatrix4fv(program.model_mat_location, 1, GL_FALSE, glm::value_ptr(model_mat));
+            glUniformMatrix4fv(program.model_mat_location, 1, GL_FALSE, glm::value_ptr(mesh.model_mat));
         if(program.shaderinfo.view_mat)
             glUniformMatrix4fv(program.view_mat_location, 1, GL_FALSE, glm::value_ptr(view_matrix));
         if(program.shaderinfo.projection_mat)
             glUniformMatrix4fv(program.projection_mat_location, 1, GL_FALSE, glm::value_ptr(projection_matrix));
+        
+        glEnable(GL_TEXTURE_2D);
+        glBindTexture(GL_TEXTURE_2D, mesh.texture.id);
 
         //vertexarr.bind_and_render();
         glBindVertexArray(vertexarr.id);

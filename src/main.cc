@@ -82,6 +82,8 @@ int main()
     Mesh mesh;
     Vertex vertex;
 
+    mesh.texture = TextureResourceHandler::load_texture("texture/space.png");
+
     vertex.position = glm::vec3(0.0f, 0.0f, -10.0f);
     vertex.normal = glm::vec3(0.0f, 0.0f, 1.0f);
     vertex.uv = glm::vec2(0.0f, 0.0f);

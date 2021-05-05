@@ -34,7 +34,9 @@ bool Shader::compile(char * shadersource, int flag)
 
         std::vector<char> errormessage(infolength);
         glGetShaderInfoLog(shaderid, infolength, NULL, errormessage.data());
-        printf("%s\n", errormessage.data());
+
+        // TODO(nitesh): Add proper error code display
+        printf("error compiling : %s\n%s\n", shadersource, errormessage.data());
 
         glDeleteShader(shaderid);
         shaderid = 0;

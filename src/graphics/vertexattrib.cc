@@ -15,6 +15,7 @@ RenderBuffer::RenderBuffer(Mesh mesh)
     layoutdesc = {1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *) offsetof(Vertex, normal)};
     layout.push_back(layoutdesc);
     layoutdesc = {2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *) offsetof(Vertex, uv)};
+    layout.push_back(layoutdesc);
 
 
     glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
