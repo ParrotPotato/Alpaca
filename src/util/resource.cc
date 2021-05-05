@@ -17,7 +17,7 @@ std::pair<int, char *> load_file_content(std::string filename)
         fseek(f, 0, SEEK_END);
         length = ftell(f);
         fseek(f, 0, SEEK_SET);
-        buffer = (char *)malloc(length);
+        buffer = (char *)malloc(length + 1);
 
         retval.first = 0;
 
@@ -34,6 +34,7 @@ std::pair<int, char *> load_file_content(std::string filename)
         fclose(f);
 
         retval.second = buffer;
+        buffer[length] = '\0';
     }
     else
     {
