@@ -5,13 +5,24 @@
 
 #include <GL/glew.h>
 
-
+struct RenderBufferArrayLayoutDesc
+{
+    GLuint vertex_attrib_array;
+    GLint count;
+    GLenum type;
+    GLboolean normalised;
+    GLsizei stride;
+    void *offset;
+};
 
 struct RenderBuffer 
 {
     GLuint vertexbuffer = 0;
     GLuint indexbuffer = 0;
     RenderBuffer(Mesh mesh);
+
+    std::vector<RenderBufferArrayLayoutDesc> layout;
+
 
     unsigned int triangle_count;
 };

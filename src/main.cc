@@ -80,14 +80,25 @@ int main()
     TextureResourceHandler::unload_texture(texture2);
 
     Mesh mesh;
+    Vertex vertex;
 
-    mesh.position.push_back(glm::vec3(0.0f, 0.0f, -10.0f));
-    mesh.position.push_back(glm::vec3(1.0f, 0.0f, -10.0f));
-    mesh.position.push_back(glm::vec3(0.0f, 1.0f, -10.0f));
+    vertex.position = glm::vec3(0.0f, 0.0f, -10.0f);
+    vertex.normal = glm::vec3(0.0f, 0.0f, 1.0f);
+    vertex.uv = glm::vec2(0.0f, 0.0f);
 
-    mesh.normal.push_back(glm::vec3(0.0f, 0.0f, 1.0f));
-    mesh.normal.push_back(glm::vec3(0.0f, 0.0f, 1.0f));
-    mesh.normal.push_back(glm::vec3(0.0f, 0.0f, 1.0f));
+    mesh.vertices.push_back(vertex);
+
+    vertex.position = glm::vec3(1.0f, 0.0f, -10.0f);
+    vertex.normal = glm::vec3(0.0f, 0.0f, 1.0f);
+    vertex.uv = glm::vec2(1.0f, 0.0f);
+
+    mesh.vertices.push_back(vertex);
+
+    vertex.position = glm::vec3(0.0f, 1.0f, -10.0f);
+    vertex.normal = glm::vec3(0.0f, 0.0f, 1.0f);
+    vertex.uv = glm::vec2(0.0f, 1.0f);
+
+    mesh.vertices.push_back(vertex);
 
     mesh.indices.push_back(0);
     mesh.indices.push_back(1);

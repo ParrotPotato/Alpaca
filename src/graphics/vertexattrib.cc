@@ -1,6 +1,7 @@
 #include <graphics/vertexattrib.hh>
 #include <graphics/mesh.hh>
 
+#include <cstddef> // used for offsetof
 
 RenderBuffer::RenderBuffer(Mesh mesh)
 {
@@ -8,18 +9,17 @@ RenderBuffer::RenderBuffer(Mesh mesh)
 
     glGenBuffers(1, &vertexbuffer);
 
-    std::vector<glm::vec3> posnormal;
+    RenderBufferArrayLayoutDesc layoutdesc;
+    layoutdesc = {0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *) offsetof(Vertex, position)};
+    layout.push_back(layoutdesc);
+    layoutdesc = {1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *) offsetof(Vertex, normal)};
+    layout.push_back(layoutdesc);
+    layoutdesc = {2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *) offsetof(Vertex, uv)};
 
-    for(size_t i = 0 ; i < mesh.position.size() ; i++)
-    {
-        posnormal.push_back(mesh.position[i]);
-        posnormal.push_back(mesh.normal[i]);
-    }
 
     glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-    glBufferData(GL_ARRAY_BUFFER, posnormal.size() * sizeof(glm::vec3), (void *) posnormal.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, mesh.vertices.size() * sizeof(Vertex), (void *) mesh.vertices.data(), GL_STATIC_DRAW);
     glBindBuffer(GL_ARRAY_BUFFER, 0); 
-    posnormal.clear();
 
     // creating the index buffer
 
@@ -39,11 +39,11 @@ VertexArray::VertexArray(RenderBuffer _renderbuffer):renderbuffer(_renderbuffer)
     glBindVertexArray(id);
     glBindBuffer(GL_ARRAY_BUFFER, _renderbuffer.vertexbuffer);
 
-    glEnableVertexAttribArray(0);
-    glEnableVertexAttribArray(1);
-
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 2 * sizeof(glm::vec3), 0);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 2 * sizeof(glm::vec3), (void *) sizeof(glm::vec3));
+    for(auto desc : _renderbuffer.layout)
+    {
+        glEnableVertexAttribArray(desc.vertex_attrib_array);
+        glVertexAttribPointer(desc.vertex_attrib_array, desc.count, desc.type, desc.normalised, desc.stride, desc.offset);
+    }
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
