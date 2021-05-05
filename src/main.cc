@@ -8,6 +8,8 @@
 #include <graphics/renderer.hh>
 #include <graphics/camera.hh>
 
+#include <graphics/texture.hh>
+
 #include <SDL2/SDL.h>
 
 #include <GL/glew.h>
@@ -65,7 +67,17 @@ int main()
     ShaderInfo shaderinfo = {true, true, true};
     ShaderProgram program("shader/simple/shader.vs", "shader/simple/shader.fs", shaderinfo);
 
-    // used for creating a wigit for updating clear color
+    // Testing space for texture loading and unloading
+
+    TextureResourceHandler::initialise();
+    Texture texture = TextureResourceHandler::load_texture("texture/space.jpg");
+    Texture texture2 = TextureResourceHandler::load_texture("texture/space.jpg");
+
+    std::cout << "texture : " << texture.id << "\n";
+    std::cout << "texture2: " << texture2.id << "\n";
+
+    TextureResourceHandler::unload_texture(texture);
+    TextureResourceHandler::unload_texture(texture2);
 
     Mesh mesh;
 

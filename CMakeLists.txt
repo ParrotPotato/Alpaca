@@ -40,6 +40,7 @@ add_executable(renderEngine
     src/graphics/renderer.cc
     src/graphics/mesh.cc
     src/graphics/camera.cc
+    src/graphics/texture.cc
 
     src/util/resource.cc
 )
