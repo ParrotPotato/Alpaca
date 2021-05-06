@@ -102,9 +102,19 @@ int main()
 
     mesh.vertices.push_back(vertex);
 
+    vertex.position = glm::vec3(1.0f, 1.0f, -10.0f);
+    vertex.normal = glm::vec3(0.0f, 0.0f, 1.0f);
+    vertex.uv = glm::vec2(1.0f, 1.0f);
+
+    mesh.vertices.push_back(vertex);
+
     mesh.indices.push_back(0);
     mesh.indices.push_back(1);
     mesh.indices.push_back(2);
+
+    mesh.indices.push_back(1);
+    mesh.indices.push_back(2);
+    mesh.indices.push_back(3);
 
     mesh.model_mat = glm::scale(mesh.model_mat, glm::vec3(5.0f, 5.0f, 1.0f));
 

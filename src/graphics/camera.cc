@@ -35,11 +35,11 @@ void DefaultCamera::update_camera_position(InputHandler & input)
     }
     if(input.keyboard.keydown(SDLK_a))
     {
-        position += glm::normalize(glm::cross(d, up)) * imm_camera_movement;
+        position += glm::normalize(glm::cross(d, up)) * (-imm_camera_movement);
     }
     if(input.keyboard.keydown(SDLK_d))
     {
-        position += glm::normalize(glm::cross(d, up)) * (-imm_camera_movement);
+        position += glm::normalize(glm::cross(d, up)) * imm_camera_movement;
     }
 
     if(input.keyboard.keydown(SDLK_LSHIFT))
