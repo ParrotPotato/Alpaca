@@ -29,17 +29,6 @@ Texture TextureResourceHandler::load_texture(std::string sourcepath)
     int width, height, nrchannel;
     unsigned char * texture_data = stbi_load(sourcepath.c_str(), &width, &height, &nrchannel, 0);
 
-    std::cout << "Debug =] Texture source : " << sourcepath;
-    if(nrchannel == STBI_rgb_alpha)
-    {
-        std::cout << " STBI_rgb_aplha" << "\n";
-    }
-    else if(nrchannel == STBI_rgb)
-    {
-        std::cout << " STBI_rgb" << "\n";
-    }
-
-
     if(!texture_data)
     {
         return Texture();

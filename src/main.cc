@@ -64,20 +64,26 @@ int main()
     std::cout << "Opengl : " << glGetString(GL_VERSION) << "\n";
     std::cout << "Running: " << std::filesystem::current_path() << "\n";
 
-    ShaderInfo shaderinfo = {true, true, true};
-    ShaderProgram program("shader/simple/shader.vs", "shader/simple/shader.fs", shaderinfo);
+    ShaderUniformTuple uniformtuple;
+    ShaderUniformInfo uniforminfo;
+
+    uniformtuple.name = "model";
+    uniformtuple.type = matrix4x4;
+    uniforminfo.tuples.push_back(uniformtuple);
+
+    uniformtuple.name = "view";
+    uniformtuple.type = matrix4x4;
+    uniforminfo.tuples.push_back(uniformtuple);
+
+    uniformtuple.name = "projection";
+    uniformtuple.type = matrix4x4;
+    uniforminfo.tuples.push_back(uniformtuple);
+
+    ShaderProgram program("shader/simple/shader.vs", "shader/simple/shader.fs", uniforminfo);
 
     // Testing space for texture loading and unloading
 
     TextureResourceHandler::initialise();
-    Texture texture = TextureResourceHandler::load_texture("texture/space.jpg");
-    Texture texture2 = TextureResourceHandler::load_texture("texture/space.jpg");
-
-    std::cout << "texture : " << texture.id << "\n";
-    std::cout << "texture2: " << texture2.id << "\n";
-
-    TextureResourceHandler::unload_texture(texture);
-    TextureResourceHandler::unload_texture(texture2);
 
     Mesh mesh;
     Vertex vertex;

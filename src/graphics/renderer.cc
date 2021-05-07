@@ -40,14 +40,11 @@ void SimpleRenderer::draw()
         VertexArray vertexarr = entry.first;
         Mesh mesh = entry.second;
 
-        if(program.shaderinfo.model_mat)
-            glUniformMatrix4fv(program.model_mat_location, 1, GL_FALSE, glm::value_ptr(mesh.model_mat));
-        if(program.shaderinfo.view_mat)
-            glUniformMatrix4fv(program.view_mat_location, 1, GL_FALSE, glm::value_ptr(view_matrix));
-        if(program.shaderinfo.projection_mat)
-            glUniformMatrix4fv(program.projection_mat_location, 1, GL_FALSE, glm::value_ptr(projection_matrix));
-        
-        glEnable(GL_TEXTURE_2D);
+        program.update_uniform_data("model", mesh.model_mat);
+        program.update_uniform_data("view", view_matrix);
+        program.update_uniform_data("projection", projection_matrix);
+
+        glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, mesh.texture.id);
 
         //vertexarr.bind_and_render();

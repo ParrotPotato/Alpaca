@@ -7,6 +7,7 @@
 #include <string>
 #include <vector>
 #include <unordered_map>
+#include <utility>
 
 struct Shader
 {
@@ -26,26 +27,58 @@ struct Shader
 
 // structure used to pass information regarding unifroms and other 
 // shader constants
-struct ShaderInfo
+
+enum ShaderUniformType
 {
-    bool model_mat = false;
-    bool view_mat = false;
-    bool projection_mat = false;
+    none,
+    matrix4x4,
+    matrix3x3,
+    float3,
+    float2,
+    float1,
+    int3,
+    int2,
+    int1
 };
+
+struct ShaderUniformTuple
+{
+    std::string name;
+    ShaderUniformType type;
+};
+
+struct ShaderUniformInfo
+{
+    std::vector<ShaderUniformTuple> tuples;
+};
+
+
 
 struct ShaderProgram
 {
     ShaderProgram() = default;
 
-    ShaderProgram(std::string vertexshadersource, std::string fragmentshadersource, ShaderInfo _shaderinfo = ShaderInfo());
-    ShaderProgram(std::vector<std::pair<std::string, int>> shadersourcelist, ShaderInfo _shaderinfo = ShaderInfo());
+    ShaderProgram(std::string vertexshadersource, std::string fragmentshadersource, ShaderUniformInfo _uniforminfo);
+    ShaderProgram(std::vector<std::pair<std::string, int>> shadersourcelist, ShaderUniformInfo _uniforminfo);
 
     void load_program_from_source_list(std::vector<std::pair<std::string, int>> shadersourcelist);
-    void load_all_uniform_variables(ShaderInfo _shaderinfo);
+    void load_all_uniform_variables();
 
     void delete_shader_program();
 
-    ShaderInfo shaderinfo;
+    struct ShaderUniformLocation
+    {
+        ShaderUniformType type;
+        GLint location;
+    };
+
+    template <typename UniformData_t>
+    void update_uniform_data(std::string uniform_name, UniformData_t data);
+
+
+    ShaderUniformInfo uniforminfo;
+    std::unordered_map<std::string, ShaderUniformLocation> locations;
+
     std::vector<Shader> shaders;
     GLuint programid = 0;
 

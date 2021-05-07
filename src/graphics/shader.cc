@@ -1,6 +1,7 @@
 #include <graphics/shader.hh>
 #include <util/resource.hh>
 
+#include <glm/gtc/type_ptr.hpp>
 
 Shader::Shader(std::string shadersourcename, int flag)
 {
@@ -55,24 +56,19 @@ void Shader::delete_shader()
 }
 
 
-ShaderProgram::ShaderProgram(std::string vertexshadersource, std::string fragmentshadersource, ShaderInfo _shaderinfo):shaderinfo(_shaderinfo)
+ShaderProgram::ShaderProgram(std::string vertexshadersource, std::string fragmentshadersource, ShaderUniformInfo _uniforminfo): uniforminfo(_uniforminfo)
 {
     std::vector<std::pair<std::string, int>> shader_sources;
     shader_sources.push_back(std::make_pair(vertexshadersource, GL_VERTEX_SHADER));
     shader_sources.push_back(std::make_pair(fragmentshadersource, GL_FRAGMENT_SHADER));
 
     load_program_from_source_list(shader_sources);
-
-    // Setting up all the uniforms and other values
-    load_all_uniform_variables(_shaderinfo);
+    load_all_uniform_variables();
 }
-
-ShaderProgram::ShaderProgram(std::vector<std::pair<std::string, int>> shader_source, ShaderInfo _shaderinfo):shaderinfo(_shaderinfo)
+ShaderProgram::ShaderProgram(std::vector<std::pair<std::string, int>> shader_source, ShaderUniformInfo _uniforminfo): uniforminfo(_uniforminfo)
 {
     load_program_from_source_list(shader_source);
-
-    // Setting up all the uniforms and other values
-    load_all_uniform_variables(_shaderinfo);
+    load_all_uniform_variables();
 }
 
 void ShaderProgram::load_program_from_source_list(std::vector<std::pair<std::string, int>> shader_source)
@@ -117,36 +113,47 @@ void ShaderProgram::load_program_from_source_list(std::vector<std::pair<std::str
     return;
 }
 
-void ShaderProgram::load_all_uniform_variables(ShaderInfo _shaderinfo)
+void ShaderProgram::load_all_uniform_variables()
 {
     if(programid == 0) return;
 
-    shaderinfo = _shaderinfo;
+    for(auto uniformtuple : uniforminfo.tuples)
+    {
+        GLint location = glGetUniformLocation(programid, uniformtuple.name.c_str());
+        locations[uniformtuple.name] = {uniformtuple.type, location};
+    }
+}
 
-    if(shaderinfo.model_mat)
-    {
-        model_mat_location = glGetUniformLocation(programid, "model");
-        if(model_mat_location == -1)
-        {
-            printf("Unable to laod model uniform location");
-        }
-    }
-    if(shaderinfo.view_mat)
-    {
-        view_mat_location = glGetUniformLocation(programid, "view");
-        if(view_mat_location == -1)
-        {
-            printf("Unable to laod view uniform location");
-        }
-    }
-    if(shaderinfo.projection_mat)
-    {
-        projection_mat_location = glGetUniformLocation(programid, "projection");
-        if(projection_mat_location == -1)
-        {
-            printf("Unable to laod projection uniform location");
-        }
-    }
+template <typename UniformData_t> void ShaderProgram::update_uniform_data(std::string uniform_name, UniformData_t data){}
+
+template <> void ShaderProgram::update_uniform_data<glm::mat4>(std::string uniform_name, glm::mat4 data)
+{
+    ShaderUniformLocation location = locations[uniform_name];
+
+    if(location.type == matrix4x4)
+        glUniformMatrix4fv(location.location, 1, GL_FALSE, glm::value_ptr(data));
+    else
+        printf("Attempting loading %s : mat4 for type ShaderUniformType:(%d)\n",uniform_name.c_str(), location.type);
+}
+
+template <> void ShaderProgram::update_uniform_data<int>(std::string uniform_name, int data)
+{
+    ShaderUniformLocation location = locations[uniform_name];
+
+    if(location.type == int1)
+        glUniform1i(location.location, data);
+    else
+        printf("Attempting loading int for type ShaderUniformType:(%d)\n",location.type);
+}
+
+template <> void ShaderProgram::update_uniform_data<float>(std::string uniform_name, float data)
+{
+    ShaderUniformLocation location = locations[uniform_name];
+
+    if(location.type == float1)
+        glUniform1f(location.location, data);
+    else
+        printf("Attempting loading float for type ShaderUniformType:(%d)\n",location.type);
 }
 
 void ShaderProgram::delete_shader_program()

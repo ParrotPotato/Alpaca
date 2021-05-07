@@ -44,6 +44,6 @@ pushd res; ../build/renderEngine; popd;
 
 Further tasks that I want to do -
 
-- [ ] Loading textures
+- [x] Loading textures
 - [ ] Loading Meshes from obj files
 - [ ] Adding basic Phong lighting in the shaders
