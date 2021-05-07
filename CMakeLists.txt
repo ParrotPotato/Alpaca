@@ -43,10 +43,14 @@ add_executable(renderEngine
     src/graphics/texture.cc
 
     src/util/resource.cc
+
+    vendor/tinyobjloader/tiny_obj_loader.cc
 )
 target_include_directories(renderEngine PUBLIC "${PROJECT_SOURCE_DIR}/src/")
 target_include_directories(renderEngine PUBLIC "${PROJECT_SOURCE_DIR}/vendor/stb")
 target_include_directories(renderEngine PUBLIC "${PROJECT_SOURCE_DIR}/vendor/imgui")
+target_include_directories(renderEngine PUBLIC "${PROJECT_SOURCE_DIR}/vendor/tinyobjloader")
+
 
 target_include_directories(renderEngine PUBLIC ${SDL2_INCLUDE_DIRS})
 target_include_directories(renderEngine PUBLIC ${OPENGL_INCLUDE_DIRS})
