@@ -37,6 +37,9 @@ Window::Window(std::string windowname, int _width, int _height, glm::vec4 _clear
 
     glClearColor(clear_color.r, clear_color.g, clear_color.b, clear_color.a);
     glClearDepth(1.0f); // Used for stensil buffer and depth rendering
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_CULL_FACE);
+    
 }
 
 void Window::clear()
